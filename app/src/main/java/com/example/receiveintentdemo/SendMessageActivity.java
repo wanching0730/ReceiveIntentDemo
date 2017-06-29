@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 public class SendMessageActivity extends AppCompatActivity {
 
+    private String message;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +29,22 @@ public class SendMessageActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-
         //receive text message from other activity
         //add intent-filter in manifest
-        String message = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if(Intent.ACTION_SEND.equals(action) && type != null)
+        {
+            if("text/plain".equals(type))
+            {
+                message = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+            }
+        }
+
 
         EditText etMessage = (EditText)findViewById(R.id.message);
         etMessage.setText(message);
